@@ -54,6 +54,8 @@ class GestureIdentifier(Node):
         self.frame_width = self.cv_image.shape[1]
         self.frame_height = self.cv_image.shape[0]
 
+    def find_hands(self)
+
 
    
 
