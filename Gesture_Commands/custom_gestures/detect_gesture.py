@@ -17,7 +17,10 @@ gestures = {
     3: "Peace",
     4: "Fists",
     5: "No Hand Detected",
-    6: "Alien"
+    6: "Alien",
+    7: "Triangle",
+    8: "Square",
+    9: "Circle"
 }
 
 # For webcam input:
