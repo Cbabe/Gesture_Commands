@@ -1,6 +1,7 @@
 package.xml
 setup.cfg
 setup.py
+Gesture_Commands/Command_Gesture.py
 Gesture_Commands/__init__.py
 Gesture_Commands/process_gesture.py
 Gesture_Commands/speed_control.py

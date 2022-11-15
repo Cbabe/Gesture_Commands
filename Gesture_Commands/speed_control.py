@@ -40,7 +40,6 @@ with mp_hands.Hands(
                         mp_hands.HAND_CONNECTIONS,
                         mp_drawing_styles.get_default_hand_landmarks_style(),
                         mp_drawing_styles.get_default_hand_connections_style())
-
             location_thumb = hand_landmarks.landmark[mp_hands.HandLandmark(4).value]
             location_index = hand_landmarks.landmark[mp_hands.HandLandmark(8).value]
 
