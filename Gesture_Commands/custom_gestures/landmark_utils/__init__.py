@@ -1,1 +1,1 @@
-from custom_gestures.landmark_utils.utils import calc_landmark_list, pre_process_landmark
+from landmark_utils.utils import calc_landmark_list, pre_process_landmark
