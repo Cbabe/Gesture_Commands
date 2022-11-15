@@ -1,0 +1,18 @@
+[0.794s] Invoking command in '/home/mitzi/ros2_ws/src/Gesture_Commands/build/Gesture_Commands': PYTHONPATH=/home/mitzi/ros2_ws/src/Gesture_Commands/install/Gesture_Commands/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py develop --prefix /home/mitzi/ros2_ws/src/Gesture_Commands/install/Gesture_Commands --editable --build-directory /home/mitzi/ros2_ws/src/Gesture_Commands/build/Gesture_Commands/build --no-deps install_data --install-dir /home/mitzi/ros2_ws/src/Gesture_Commands/install/Gesture_Commands
+[1.100s] running develop
+[1.337s] running egg_info
+[1.337s] writing Gesture_Commands.egg-info/PKG-INFO
+[1.337s] writing dependency_links to Gesture_Commands.egg-info/dependency_links.txt
+[1.338s] writing entry points to Gesture_Commands.egg-info/entry_points.txt
+[1.338s] writing requirements to Gesture_Commands.egg-info/requires.txt
+[1.338s] writing top-level names to Gesture_Commands.egg-info/top_level.txt
+[1.367s] reading manifest file 'Gesture_Commands.egg-info/SOURCES.txt'
+[1.367s] writing manifest file 'Gesture_Commands.egg-info/SOURCES.txt'
+[1.406s] running build_ext
+[1.406s] Creating /home/mitzi/ros2_ws/src/Gesture_Commands/install/Gesture_Commands/lib/python3.8/site-packages/Gesture-Commands.egg-link (link to .)
+[1.407s] Installing Command_Gesture script to /home/mitzi/ros2_ws/src/Gesture_Commands/install/Gesture_Commands/lib/Gesture_Commands
+[1.407s] Installing process_gesture script to /home/mitzi/ros2_ws/src/Gesture_Commands/install/Gesture_Commands/lib/Gesture_Commands
+[1.407s] 
+[1.407s] Installed /home/mitzi/ros2_ws/src/Gesture_Commands/build/Gesture_Commands
+[1.407s] running install_data
+[1.432s] Invoked command in '/home/mitzi/ros2_ws/src/Gesture_Commands/build/Gesture_Commands' returned '0': PYTHONPATH=/home/mitzi/ros2_ws/src/Gesture_Commands/install/Gesture_Commands/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py develop --prefix /home/mitzi/ros2_ws/src/Gesture_Commands/install/Gesture_Commands --editable --build-directory /home/mitzi/ros2_ws/src/Gesture_Commands/build/Gesture_Commands/build --no-deps install_data --install-dir /home/mitzi/ros2_ws/src/Gesture_Commands/install/Gesture_Commands

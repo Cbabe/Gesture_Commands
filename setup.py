@@ -20,7 +20,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'process_gesture = Gesture_Commands.process_gesture:main'
+            'process_gesture = Gesture_Commands.process_gesture:main',
+            'Command_Gesture = Gesture_Commands.Command_Gesture:main'
         ],
     },
 )

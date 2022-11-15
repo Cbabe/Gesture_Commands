@@ -1,3 +1,4 @@
 [console_scripts]
+Command_Gesture = Gesture_Commands.Command_Gesture:main
 process_gesture = Gesture_Commands.process_gesture:main
 

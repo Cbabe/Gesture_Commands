@@ -6,8 +6,8 @@ from neato2_interfaces.msg import Bump
 from geometry_msgs.msg import Twist
 import cv2
 import mediapipe as mp
-from model import KeyPointClassifier
-import landmark_utils as u
+from custom_gestures.model import KeyPointClassifier
+import custom_gestures.landmark_utils as u
 class gesture_command(Node):
     def __init__(self):
         super().__init__('teleop')

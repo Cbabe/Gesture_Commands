@@ -1,0 +1,16 @@
+running develop
+running egg_info
+writing Gesture_Commands.egg-info/PKG-INFO
+writing dependency_links to Gesture_Commands.egg-info/dependency_links.txt
+writing entry points to Gesture_Commands.egg-info/entry_points.txt
+writing requirements to Gesture_Commands.egg-info/requires.txt
+writing top-level names to Gesture_Commands.egg-info/top_level.txt
+reading manifest file 'Gesture_Commands.egg-info/SOURCES.txt'
+writing manifest file 'Gesture_Commands.egg-info/SOURCES.txt'
+running build_ext
+Creating /home/mitzi/ros2_ws/src/Gesture_Commands/install/Gesture_Commands/lib/python3.8/site-packages/Gesture-Commands.egg-link (link to .)
+Installing Command_Gesture script to /home/mitzi/ros2_ws/src/Gesture_Commands/install/Gesture_Commands/lib/Gesture_Commands
+Installing process_gesture script to /home/mitzi/ros2_ws/src/Gesture_Commands/install/Gesture_Commands/lib/Gesture_Commands
+
+Installed /home/mitzi/ros2_ws/src/Gesture_Commands/build/Gesture_Commands
+running install_data
