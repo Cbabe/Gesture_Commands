@@ -1,0 +1,14 @@
+package.xml
+setup.cfg
+setup.py
+Gesture_Commands/__init__.py
+Gesture_Commands/process_gesture.py
+Gesture_Commands/speed_control.py
+Gesture_Commands.egg-info/PKG-INFO
+Gesture_Commands.egg-info/SOURCES.txt
+Gesture_Commands.egg-info/dependency_links.txt
+Gesture_Commands.egg-info/entry_points.txt
+Gesture_Commands.egg-info/requires.txt
+Gesture_Commands.egg-info/top_level.txt
+Gesture_Commands.egg-info/zip-safe
+resource/Gesture_Commands

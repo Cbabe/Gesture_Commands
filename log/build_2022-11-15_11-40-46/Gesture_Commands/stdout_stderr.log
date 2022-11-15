@@ -1,0 +1,23 @@
+running develop
+running egg_info
+creating Gesture_Commands.egg-info
+writing Gesture_Commands.egg-info/PKG-INFO
+writing dependency_links to Gesture_Commands.egg-info/dependency_links.txt
+writing entry points to Gesture_Commands.egg-info/entry_points.txt
+writing requirements to Gesture_Commands.egg-info/requires.txt
+writing top-level names to Gesture_Commands.egg-info/top_level.txt
+writing manifest file 'Gesture_Commands.egg-info/SOURCES.txt'
+reading manifest file 'Gesture_Commands.egg-info/SOURCES.txt'
+writing manifest file 'Gesture_Commands.egg-info/SOURCES.txt'
+running build_ext
+Creating /home/mitzi/ros2_ws/src/Gesture_Commands/install/Gesture_Commands/lib/python3.8/site-packages/site.py
+Creating /home/mitzi/ros2_ws/src/Gesture_Commands/install/Gesture_Commands/lib/python3.8/site-packages/Gesture-Commands.egg-link (link to .)
+Installing process_gesture script to /home/mitzi/ros2_ws/src/Gesture_Commands/install/Gesture_Commands/lib/Gesture_Commands
+
+Installed /home/mitzi/ros2_ws/src/Gesture_Commands/build/Gesture_Commands
+running install_data
+creating /home/mitzi/ros2_ws/src/Gesture_Commands/install/Gesture_Commands/share/ament_index
+creating /home/mitzi/ros2_ws/src/Gesture_Commands/install/Gesture_Commands/share/ament_index/resource_index
+creating /home/mitzi/ros2_ws/src/Gesture_Commands/install/Gesture_Commands/share/ament_index/resource_index/packages
+copying resource/Gesture_Commands -> /home/mitzi/ros2_ws/src/Gesture_Commands/install/Gesture_Commands/share/ament_index/resource_index/packages
+copying package.xml -> /home/mitzi/ros2_ws/src/Gesture_Commands/install/Gesture_Commands/share/Gesture_Commands
