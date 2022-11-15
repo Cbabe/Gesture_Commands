@@ -6,8 +6,14 @@ from neato2_interfaces.msg import Bump
 from geometry_msgs.msg import Twist
 import cv2
 import mediapipe as mp
+<<<<<<< Updated upstream:Gesture_Commands/Command_Gesture.py
 from custom_gestures.model import KeyPointClassifier
 import custom_gestures.landmark_utils as u
+=======
+from model import KeyPointClassifier
+import landmark_utils as u
+
+>>>>>>> Stashed changes:Gesture_Commands/custom-gestures/Command_Gesture.py
 class gesture_command(Node):
     def __init__(self):
         super().__init__('teleop')
@@ -88,8 +94,44 @@ class gesture_command(Node):
                 if cv2.waitKey(5) & 0xFF == 27:
                     self.cap.release()
                     break
+    
+    def drive_square(self):
+        while True:
+            msg = Twist()
 
+            msg.linear.x = 1.0
+            msg.angular.z = 0.0
 
+            self.vel_pub.publish(msg)
+            time.sleep(3)
+
+            msg.linear.x = 0.0
+            msg.angular.z = 0.0
+
+            self.vel_pub.publish(msg)
+            time.sleep(0.5)
+
+            msg.angular.z = 1.0
+            msg.linear.x = 0.0
+
+            self.vel_pub.publish(msg)
+            time.sleep(2.06)
+
+            msg.linear.x = 0.0
+            msg.angular.z = 0.0
+
+            self.vel_pub.publish(msg)
+            time.sleep(0.5)
+
+    def drive_circle(self):
+        while True:
+            msg = Twist()
+
+            msg.linear.x = 1.0
+            msg.angular.z = 1.0
+
+            self.vel_pub.publish(msg)
+            
 def main(args=None):
     rclpy.init(args=args)         # Initialize communication with ROS
     node = gesture_command()   # Create our Node
