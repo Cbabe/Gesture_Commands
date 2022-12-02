@@ -4,15 +4,10 @@ import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import Twist
 import cv2
+import time
 import mediapipe as mp
-<<<<<<< Updated upstream:Gesture_Commands/Command_Gesture.py
 from custom_gestures.model import KeyPointClassifier
 import custom_gestures.landmark_utils as u
-=======
-from model import KeyPointClassifier
-import landmark_utils as u
-
->>>>>>> Stashed changes:Gesture_Commands/custom-gestures/Command_Gesture.py
 class gesture_command(Node):
     def __init__(self):
         super().__init__('teleop')
@@ -75,7 +70,6 @@ class gesture_command(Node):
                 cv2.imshow('MediaPipe Hands', final)
                 
                 speed_msg = Twist()
-                no_gesture_index
                 if no_gesture_index==0:
                     #Forward
                     speed_msg.linear.x = 1.0
