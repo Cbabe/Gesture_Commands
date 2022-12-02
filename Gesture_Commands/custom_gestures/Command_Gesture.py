@@ -28,8 +28,8 @@ class gesture_command(Node):
             1: "Pointer: Draw",
             2: "Two: Left",
             3: "Three:Right",
-            4: "Four: Backwards",
-            5: "Five: Forwards",
+            4: "Four: Forwards",
+            5: "Five: Backwards",
             6: "No Known Gesture Detected",
             7: "Triangle",
             8: "Square",
@@ -258,7 +258,11 @@ class gesture_command(Node):
 
     def process_pose(self, msg):
         # print(msg)
-        self.pose = self.helper.convert_pose_to_xy_and_theta(msg.pose.pose)
+        
+        temp_pose = self.helper.convert_pose_to_xy_and_theta(msg.pose.pose)
+        pose_list = list(temp_pose)
+        pose_list[2] = pose_list[2] * 180 / (2* math.pi)
+        self.pose = tuple(pose_list)
         print(self.pose)
     
 
