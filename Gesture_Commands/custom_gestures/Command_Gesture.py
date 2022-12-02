@@ -2,7 +2,7 @@
 
 import rclpy
 from rclpy.node import Node
-from geometry_msgs.msg import Twist, PoseWithCovarianceStamped, Pose
+from geometry_msgs.msg import Twist
 import cv2
 import mediapipe as mp
 import time
@@ -10,6 +10,7 @@ import math
 from threading import Thread
 from nav_msgs.msg import Odometry
 from model import KeyPointClassifier
+from helper_functions import TFHelper
 import landmark_utils as u
 
 class gesture_command(Node):
@@ -18,6 +19,7 @@ class gesture_command(Node):
         self.mp_drawing = mp.solutions.drawing_utils
         self.mp_drawing_styles = mp.solutions.drawing_styles
         self.mp_hands = mp.solutions.hands
+        self.helper = TFHelper(self)
 
         self.kpclf = KeyPointClassifier()
 
@@ -35,14 +37,16 @@ class gesture_command(Node):
         }
 
         self.gesture_index = None
-        self.pose = [0, 0, 0]
+        self.pose = [0.0, 0.0, 0.0]
 
         # For webcam input:
         self.cap = cv2.VideoCapture(0)
         print("found webcam")
         self.vel_pub = self.create_publisher(Twist, 'cmd_vel', 10)
-        self.odom_sub = self.create_subscription(Odometry, 'odom', self.process_pose, 10)
         print("created velocity publisher")
+        self.odom_sub = self.create_subscription(Odometry, 'odom', self.process_pose, 10)
+        print("created odometry subscriber")
+        
 
         camera_thread = Thread(target=self.process_image)
         camera_thread.start()
@@ -100,41 +104,41 @@ class gesture_command(Node):
     def control(self):
         while True:
             speed_msg = Twist()
-            print(self.gesture_index)
+            #print(self.gesture_index)
             if self.gesture_index==0:
                 #Forward
                 speed_msg.linear.x = 1.0
                 speed_msg.angular.z = 0.0
-                print("forward")
+                #print("forward")
             elif self.gesture_index==1:
                 #Backward
                 speed_msg.linear.x = -1.0
                 speed_msg.angular.z = 0.0
-                print("backward")
+                #print("backward")
             elif self.gesture_index==2:
                 #Turn Right
                 speed_msg.linear.x = 0.0
                 speed_msg.angular.z = 1.0
-                print("right")
+                #print("right")
             elif self.gesture_index==3:
                 #Turn Left
                 speed_msg.linear.x = 0.0
                 speed_msg.angular.z = -1.0
-                print("left")
+                #print("left")
             elif self.gesture_index==5:
                 #Do Nothing
                 speed_msg.linear.x = 0.0
                 speed_msg.angular.z = 0.0
                 print("no gesture")
             elif self.gesture_index == 7:
-                print("triangle")
+                #print("triangle")
                 self.drive_triangle()
             elif self.gesture_index == 8:
-                print("square")
+                #print("square")
                 self.drive_square()
 
             elif self.gesture_index == 9:
-                print("circle")
+                #print("circle")
                 self.drive_circle()
         
             #Publish
@@ -144,6 +148,14 @@ class gesture_command(Node):
     
     def drive_square(self):
         msg = Twist()
+
+        # drive first side
+        # turn 90 degrees
+        # drive second side
+        # turn 90 degrees
+        # drive third side
+        # turn 90 degrees
+        # drive fourth side
 
         # drive one side of square
         msg.linear.x = 1.0
@@ -238,8 +250,8 @@ class gesture_command(Node):
         print("finished circle")
 
     def process_pose(self, msg):
-        print(msg)
-        self.pose = self.convert_pose_to_xy_and_theta(msg.pose.pose)
+        # print(msg)
+        self.pose = self.helper.convert_pose_to_xy_and_theta(msg.pose)
         print(self.pose)
     
 
