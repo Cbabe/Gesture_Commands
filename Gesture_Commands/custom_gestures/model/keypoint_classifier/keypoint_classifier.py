@@ -5,11 +5,10 @@ import tensorflow as tf
 class KeyPointClassifier(object):
     def __init__(
         self,
-        model_path='model/keypoint_classifier/keypoint_classifier.tflite',
+        model_path='/home/mitzi/ros2_ws/src/Gesture_Commands/Gesture_Commands/custom_gestures/model/keypoint_classifier/keypoint_classifier.tflite',
         num_threads=1,
     ):
-        self.interpreter = tf.lite.Interpreter(model_path=model_path,
-                                               num_threads=num_threads)
+        self.interpreter = tf.lite.Interpreter(model_path=model_path, num_threads=num_threads)
 
         self.interpreter.allocate_tensors()
         self.input_details = self.interpreter.get_input_details()

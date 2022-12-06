@@ -9,10 +9,10 @@ import time
 import math
 from threading import Thread
 from nav_msgs.msg import Odometry
-from custom_gestures.model import KeyPointClassifier
-from custom_gestures.helper_functions import TFHelper
-import custom_gestures.landmark_utils as u
-import numpy as np
+from model import KeyPointClassifier
+from helper_functions import TFHelper
+import landmark_utils as u
+
 class gesture_command(Node):
     def __init__(self):
         super().__init__('Command_Gesture')
@@ -38,7 +38,7 @@ class gesture_command(Node):
 
         self.gesture_index = None
         self.pose = [0.0, 0.0, 0.0]
-        self.binary_image=None
+
         # For webcam input:
         self.cap = cv2.VideoCapture(0)
         print("found webcam")
@@ -56,14 +56,14 @@ class gesture_command(Node):
         control_thread.start()
         print("started control thread...")
 
+        
 
+    
+    
     def process_image(self):
         with self.mp_hands.Hands(model_complexity=0, min_detection_confidence=0.5,min_tracking_confidence=0.5) as hands:
             while self.cap.isOpened():
                 success, image = self.cap.read()
-                image_hight, image_width, _ = image.shape
-                if self.binary_image is None:
-                    self.binary_image=np.zeros((image_hight,image_width,3),np.uint8)
                 if not success:
                     print("Ignoring empty camera frame.")
                     # If loading a video, use 'break' instead of 'continue'.
@@ -93,25 +93,11 @@ class gesture_command(Node):
                             self.mp_hands.HAND_CONNECTIONS,
                             self.mp_drawing_styles.get_default_hand_landmarks_style(),
                             self.mp_drawing_styles.get_default_hand_connections_style())
-                       
-                        i=hand_landmarks.landmark[self.mp_hands.HandLandmark.INDEX_FINGER_TIP].x * image_width
-                        y=hand_landmarks.landmark[self.mp_hands.HandLandmark.INDEX_FINGER_TIP].y * image_hight
-                        i=round(i)
-                        y=round(y)
-                        if i>image_width:
-                            i=image_width
-                        if i<0:
-                            i=0
-                        if y>image_hight:
-                            y=image_hight
-                        if y<0:
-                            y=0  
-                        self.binary_image[i,y]=[255,255,255] #white
                 # Flip the image horizontally for a selfie-view display.
-                cv2.putText(image, self.gestures[self.gesture_index],
+                final = cv2.flip(image, 1)
+                cv2.putText(final, self.gestures[self.gesture_index],
                             (10, 30), cv2.FONT_HERSHEY_DUPLEX, 1, 255)
-                cv2.imshow('Binary Image', self.binary_image)
-                cv2.imshow('MediaPipe Hands', image)
+                cv2.imshow('MediaPipe Hands', final)
                 if cv2.waitKey(5) & 0xFF == 27:
                     self.cap.release()
                 
@@ -143,6 +129,7 @@ class gesture_command(Node):
                 #Do Nothing
                 speed_msg.linear.x = 0.0
                 speed_msg.angular.z = 0.0
+                print("no gesture")
             elif self.gesture_index == 7:
                 #print("triangle")
                 self.drive_triangle()
