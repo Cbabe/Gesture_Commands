@@ -24,13 +24,13 @@ class gesture_command(Node):
         self.kpclf = KeyPointClassifier()
 
         self.gestures = {
-            0: "Open Hand",
-            1: "Thumb up",
-            2: "OK",
-            3: "Peace",
-            4: "Fists",
-            5: "No Hand Detected",
-            6: "Alien",
+            0: "Fists: Stop",
+            1: "Pointer: Draw",
+            2: "Two: Left",
+            3: "Three:Right",
+            4: "Four: Forwards",
+            5: "Five: Backwards",
+            6: "No Known Gesture Detected",
             7: "Triangle",
             8: "Square",
             9: "Circle"
@@ -55,10 +55,7 @@ class gesture_command(Node):
         control_thread = Thread(target=self.control)
         control_thread.start()
         print("started control thread...")
-
-        
-
-    
+   
     
     def process_image(self):
         with self.mp_hands.Hands(model_complexity=0, min_detection_confidence=0.5,min_tracking_confidence=0.5) as hands:
@@ -78,7 +75,7 @@ class gesture_command(Node):
                 # Draw the hand annotations on the image.
                 image.flags.writeable = True
                 image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
-                no_gesture_index = 5
+                no_gesture_index = 6
                 self.gesture_index = no_gesture_index
 
                 if results.multi_hand_landmarks:
@@ -106,30 +103,40 @@ class gesture_command(Node):
             speed_msg = Twist()
             #print(self.gesture_index)
             if self.gesture_index==0:
-                #Forward
+                # Stop
+                speed_msg.linear.x = 0.0
+                speed_msg.angular.z = 0.0
+                #print("no gesture")
+            elif self.gesture_index==1:
+                # Point/Draw
+                speed_msg.linear.x = 0.0
+                speed_msg.angular.z = 0.0
+                #print("drawing")
+            elif self.gesture_index==2:
+                #Turn Left
+                speed_msg.linear.x = 0.0
+                speed_msg.angular.z = 1.0
+                #print("left")
+            elif self.gesture_index==3:
+                #Turn Right
+                speed_msg.linear.x = 0.0
+                speed_msg.angular.z = -1.0
+                #print("right") 
+            elif self.gesture_index==4:
+                #Forwards
                 speed_msg.linear.x = 1.0
                 speed_msg.angular.z = 0.0
-                #print("forward")
-            elif self.gesture_index==1:
-                #Backward
+                #print("forwards")
+            elif self.gesture_index==5:
+                #Backwards
                 speed_msg.linear.x = -1.0
                 speed_msg.angular.z = 0.0
                 #print("backward")
-            elif self.gesture_index==2:
-                #Turn Right
-                speed_msg.linear.x = 0.0
-                speed_msg.angular.z = 1.0
-                #print("right")
-            elif self.gesture_index==3:
-                #Turn Left
-                speed_msg.linear.x = 0.0
-                speed_msg.angular.z = -1.0
-                #print("left")
-            elif self.gesture_index==5:
-                #Do Nothing
+            elif self.gesture_index==6:
+                #No gesture
                 speed_msg.linear.x = 0.0
                 speed_msg.angular.z = 0.0
-                print("no gesture")
+                #print("no gesture detected")
             elif self.gesture_index == 7:
                 #print("triangle")
                 self.drive_triangle()
@@ -251,7 +258,11 @@ class gesture_command(Node):
 
     def process_pose(self, msg):
         # print(msg)
-        self.pose = self.helper.convert_pose_to_xy_and_theta(msg.pose)
+        
+        temp_pose = self.helper.convert_pose_to_xy_and_theta(msg.pose.pose)
+        pose_list = list(temp_pose)
+        pose_list[2] = pose_list[2] * 180 / (2* math.pi)
+        self.pose = tuple(pose_list)
         print(self.pose)
     
 
