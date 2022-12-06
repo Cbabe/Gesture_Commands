@@ -13,6 +13,7 @@ from custom_gestures.model import KeyPointClassifier
 from custom_gestures.helper_functions import TFHelper
 import custom_gestures.landmark_utils as u
 import numpy as np
+from custom_gestures.helper_functions import *
 class gesture_command(Node):
     def __init__(self):
         super().__init__('Command_Gesture')
@@ -37,6 +38,7 @@ class gesture_command(Node):
         }
 
         self.gesture_index = None
+        self.previous_point=None
         self.pose = [0.0, 0.0, 0.0]
         self.binary_image=None
         # For webcam input:
@@ -63,7 +65,7 @@ class gesture_command(Node):
                 success, image = self.cap.read()
                 image_hight, image_width, _ = image.shape
                 if self.binary_image is None:
-                    self.binary_image=np.zeros((image_hight,image_width,3),np.uint8)
+                    self.binary_image=np.zeros((image_width,image_hight,3),np.uint8)
                 if not success:
                     print("Ignoring empty camera frame.")
                     # If loading a video, use 'break' instead of 'continue'.
@@ -98,15 +100,23 @@ class gesture_command(Node):
                         y=hand_landmarks.landmark[self.mp_hands.HandLandmark.INDEX_FINGER_TIP].y * image_hight
                         i=round(i)
                         y=round(y)
-                        if i>image_width:
-                            i=image_width
+                        print(f"x:{i}, y:{y}")
+                        if i>=image_width:
+                            i=image_width-1
                         if i<0:
                             i=0
-                        if y>image_hight:
-                            y=image_hight
+                        if y>=image_hight:
+                            y=image_hight-1
                         if y<0:
                             y=0  
-                        self.binary_image[i,y]=[255,255,255] #white
+                        if self.previous_point is None:
+                            self.previous_point=(i,y)
+                        else:
+                            cv2.line(self.binary_image, self.previous_point, (i,y), [255,255,255], 3) 
+                            self.previous_point=(i,y)
+                        #self.binary_image[i,y]=[255,255,255] #white
+                newImage = self.binary_image.copy()
+                find_shapes(newImage)
                 # Flip the image horizontally for a selfie-view display.
                 cv2.putText(image, self.gestures[self.gesture_index],
                             (10, 30), cv2.FONT_HERSHEY_DUPLEX, 1, 255)

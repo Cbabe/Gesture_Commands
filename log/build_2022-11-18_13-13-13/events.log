@@ -1,0 +1,71 @@
+[0.000000] (-) TimerEvent: {}
+[0.000251] (Gesture_Commands) JobQueued: {'identifier': 'Gesture_Commands', 'dependencies': OrderedDict()}
+[0.000833] (Gesture_Commands) JobStarted: {'identifier': 'Gesture_Commands'}
+[0.099784] (-) TimerEvent: {}
+[0.200522] (-) TimerEvent: {}
+[0.302214] (-) TimerEvent: {}
+[0.403213] (-) TimerEvent: {}
+[0.503561] (-) TimerEvent: {}
+[0.604974] (-) TimerEvent: {}
+[0.707278] (-) TimerEvent: {}
+[0.808518] (-) TimerEvent: {}
+[0.909318] (-) TimerEvent: {}
+[1.010543] (-) TimerEvent: {}
+[1.115439] (-) TimerEvent: {}
+[1.216414] (-) TimerEvent: {}
+[1.317201] (-) TimerEvent: {}
+[1.418980] (-) TimerEvent: {}
+[1.520038] (-) TimerEvent: {}
+[1.620358] (-) TimerEvent: {}
+[1.720930] (-) TimerEvent: {}
+[1.821875] (-) TimerEvent: {}
+[1.922568] (-) TimerEvent: {}
+[2.023100] (-) TimerEvent: {}
+[2.123837] (-) TimerEvent: {}
+[2.224580] (-) TimerEvent: {}
+[2.324886] (-) TimerEvent: {}
+[2.425526] (-) TimerEvent: {}
+[2.526963] (-) TimerEvent: {}
+[2.627646] (-) TimerEvent: {}
+[2.728209] (-) TimerEvent: {}
+[2.805064] (Gesture_Commands) Command: {'cmd': ['/usr/bin/python3', 'setup.py', 'develop', '--prefix', '/home/mitzi/ros2_ws/src/Gesture_Commands/install/Gesture_Commands', '--editable', '--build-directory', '/home/mitzi/ros2_ws/src/Gesture_Commands/build/Gesture_Commands/build', '--no-deps', 'install_data', '--install-dir', '/home/mitzi/ros2_ws/src/Gesture_Commands/install/Gesture_Commands'], 'cwd': '/home/mitzi/ros2_ws/src/Gesture_Commands/build/Gesture_Commands', 'env': {'LESSOPEN': '| /usr/bin/lesspipe %s', 'USER': 'mitzi', 'SSH_AGENT_PID': '1345', 'ROS_PACKAGE_PATH': '/opt/ros/noetic/share', 'XDG_SESSION_TYPE': 'x11', 'GIT_ASKPASS': '/snap/code/113/usr/share/code/resources/app/extensions/git/dist/askpass.sh', 'ROS_ETC_DIR': '/opt/ros/noetic/etc/ros', 'SHLVL': '2', 'LD_LIBRARY_PATH': '/home/mitzi/ros2_ws/install/simple_filter/lib:/home/mitzi/ros2_ws/install/neato2_interfaces/lib:/home/mitzi/ros2_ws/install/apriltag_ros/lib:/home/mitzi/ros2_ws/install/apriltag_msgs/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/foxy/opt/yaml_cpp_vendor/lib:/opt/ros/foxy/opt/rviz_ogre_vendor/lib:/opt/ros/foxy/lib/x86_64-linux-gnu:/opt/ros/foxy/lib:/opt/ros/noetic/lib', 'HOME': '/home/mitzi', 'CHROME_DESKTOP': 'code-url-handler.desktop', 'TERM_PROGRAM_VERSION': '1.73.1', 'DESKTOP_SESSION': 'ubuntu', 'ROS_PYTHON_VERSION': '3', 'GNOME_SHELL_SESSION_MODE': 'ubuntu', 'GTK_MODULES': 'gail:atk-bridge', 'VSCODE_GIT_ASKPASS_MAIN': '/snap/code/113/usr/share/code/resources/app/extensions/git/dist/askpass-main.js', 'VSCODE_GIT_ASKPASS_NODE': '/snap/code/113/usr/share/code/code', 'MANAGERPID': '1058', 'DBUS_STARTER_BUS_TYPE': 'session', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1000/bus,guid=e0d1f436a948d9c05acf2901637783e9', 'COLORTERM': 'truecolor', 'IM_CONFIG_PHASE': '1', 'COLCON_PREFIX_PATH': '/home/mitzi/ros2_ws/install', 'ROS_DISTRO': 'foxy', 'LOGNAME': 'mitzi', 'JOURNAL_STREAM': '8:48405', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'PKG_CONFIG_PATH': '/opt/ros/noetic/lib/pkgconfig', 'XDG_SESSION_CLASS': 'user', 'USERNAME': 'mitzi', 'TERM': 'xterm-256color', 'GNOME_DESKTOP_SESSION_ID': 'this-is-deprecated', 'ROS_LOCALHOST_ONLY': '0', 'WINDOWPATH': '2', 'PATH': '/opt/ros/foxy/bin:/opt/ros/noetic/bin:/usr/lib/ccache:/home/mitzi/Documents/ardupilot/Tools/autotest:/opt/gcc-arm-none-eabi-10-2020-q4-major/bin:/home/mitzi/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin', 'SESSION_MANAGER': 'local/MyLinux:@/tmp/.ICE-unix/1383,unix/MyLinux:/tmp/.ICE-unix/1383', 'INVOCATION_ID': 'c586fb8809184a07bbc5ad09dce1df9d', 'XDG_MENU_PREFIX': 'gnome-', 'GNOME_TERMINAL_SCREEN': '/org/gnome/Terminal/screen/32bb7873_ed62_4e89_a3a7_0fe6a8c48076', 'XDG_RUNTIME_DIR': '/run/user/1000', 'GDK_BACKEND': 'x11', 'DISPLAY': ':0', 'LANG': 'en_US.UTF-8', 'XDG_CURRENT_DESKTOP': 'Unity', 'XMODIFIERS': '@im=ibus', 'ROSLISP_PACKAGE_DIRECTORIES': '', 'XDG_SESSION_DESKTOP': 'ubuntu', 'XAUTHORITY': '/run/user/1000/gdm/Xauthority', 'LS_COLORS': 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:', 'VSCODE_GIT_IPC_HANDLE': '/run/user/1000/vscode-git-6264edfa33.sock', 'GNOME_TERMINAL_SERVICE': ':1.82', 'ROS_ROOT': '/opt/ros/noetic/share/ros', 'TERM_PROGRAM': 'vscode', 'SSH_AUTH_SOCK': '/run/user/1000/keyring/ssh', 'GSETTINGS_SCHEMA_DIR': '/snap/code/113/usr/share/glib-2.0/schemas', 'ROS_DOMAIN_ID': '3', 'AMENT_PREFIX_PATH': '/home/mitzi/ros2_ws/install/warmup_project:/home/mitzi/ros2_ws/install/visual_odometry:/home/mitzi/ros2_ws/install/simple_filter:/home/mitzi/ros2_ws/install/sample_node_architectures:/home/mitzi/ros2_ws/install/robot_localization:/home/mitzi/ros2_ws/install/neato_node2:/home/mitzi/ros2_ws/install/neato2_gazebo:/home/mitzi/ros2_ws/install/in_class_day04_solutions:/home/mitzi/ros2_ws/install/in_class_day03_solutions:/home/mitzi/ros2_ws/install/neato2_interfaces:/home/mitzi/ros2_ws/install/in_class_day02_solutions:/home/mitzi/ros2_ws/install/fix_scan:/home/mitzi/ros2_ws/install/apriltag_ros:/home/mitzi/ros2_ws/install/apriltag_msgs:/home/mitzi/ros2_ws/install/Gesture_Commands:/opt/ros/foxy', 'ORIGINAL_XDG_CURRENT_DESKTOP': 'ubuntu:GNOME', 'SHELL': '/bin/bash', 'QT_ACCESSIBILITY': '1', 'ROS_MASTER_URI': 'http://localhost:11311', 'GDMSESSION': 'ubuntu', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'GPG_AGENT_INFO': '/run/user/1000/gnupg/S.gpg-agent:0:1', 'VSCODE_GIT_ASKPASS_EXTRA_ARGS': '--ms-enable-electron-run-as-node', 'QT_IM_MODULE': 'ibus', 'PWD': '/home/mitzi/ros2_ws/src/Gesture_Commands/build/Gesture_Commands', 'LC_ALL': 'en_US.UTF-8', 'XDG_CONFIG_DIRS': '/etc/xdg/xdg-ubuntu:/etc/xdg', 'DBUS_STARTER_ADDRESS': 'unix:path=/run/user/1000/bus,guid=e0d1f436a948d9c05acf2901637783e9', 'XDG_DATA_DIRS': '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop', 'PYTHONPATH': '/home/mitzi/ros2_ws/src/Gesture_Commands/install/Gesture_Commands/lib/python3.8/site-packages:/home/mitzi/ros2_ws/install/warmup_project/lib/python3.8/site-packages:/home/mitzi/ros2_ws/install/visual_odometry/lib/python3.8/site-packages:/home/mitzi/ros2_ws/install/simple_filter/lib/python3.8/site-packages:/home/mitzi/ros2_ws/install/sample_node_architectures/lib/python3.8/site-packages:/home/mitzi/ros2_ws/install/robot_localization/lib/python3.8/site-packages:/home/mitzi/ros2_ws/install/neato_node2/lib/python3.8/site-packages:/home/mitzi/ros2_ws/install/in_class_day04_solutions/lib/python3.8/site-packages:/home/mitzi/ros2_ws/install/in_class_day03_solutions/lib/python3.8/site-packages:/home/mitzi/ros2_ws/install/neato2_interfaces/lib/python3.8/site-packages:/home/mitzi/ros2_ws/install/in_class_day02_solutions/lib/python3.8/site-packages:/home/mitzi/ros2_ws/install/apriltag_msgs/lib/python3.8/site-packages:/home/mitzi/ros2_ws/install/Gesture_Commands/lib/python3.8/site-packages:/opt/ros/foxy/lib/python3.8/site-packages:/opt/ros/noetic/lib/python3/dist-packages', 'COLCON': '1', 'VTE_VERSION': '6003', 'CMAKE_PREFIX_PATH': '/home/mitzi/ros2_ws/install/simple_filter:/home/mitzi/ros2_ws/install/robot_localization:/home/mitzi/ros2_ws/install/neato2_gazebo:/home/mitzi/ros2_ws/install/neato2_interfaces:/home/mitzi/ros2_ws/install/fix_scan:/home/mitzi/ros2_ws/install/apriltag_ros:/home/mitzi/ros2_ws/install/apriltag_msgs:/opt/ros/noetic'}, 'shell': False}
+[2.828449] (-) TimerEvent: {}
+[2.929486] (-) TimerEvent: {}
+[3.030012] (-) TimerEvent: {}
+[3.131616] (-) TimerEvent: {}
+[3.232586] (-) TimerEvent: {}
+[3.333003] (-) TimerEvent: {}
+[3.434226] (-) TimerEvent: {}
+[3.534964] (-) TimerEvent: {}
+[3.635517] (-) TimerEvent: {}
+[3.736291] (-) TimerEvent: {}
+[3.780934] (Gesture_Commands) StdoutLine: {'line': b'running develop\n'}
+[3.836507] (-) TimerEvent: {}
+[3.937512] (-) TimerEvent: {}
+[4.038192] (-) TimerEvent: {}
+[4.139577] (-) TimerEvent: {}
+[4.240561] (-) TimerEvent: {}
+[4.340998] (-) TimerEvent: {}
+[4.441645] (-) TimerEvent: {}
+[4.484269] (Gesture_Commands) StdoutLine: {'line': b'running egg_info\n'}
+[4.486374] (Gesture_Commands) StdoutLine: {'line': b'writing Gesture_Commands.egg-info/PKG-INFO\n'}
+[4.489854] (Gesture_Commands) StdoutLine: {'line': b'writing dependency_links to Gesture_Commands.egg-info/dependency_links.txt\n'}
+[4.491062] (Gesture_Commands) StdoutLine: {'line': b'writing entry points to Gesture_Commands.egg-info/entry_points.txt\n'}
+[4.491840] (Gesture_Commands) StdoutLine: {'line': b'writing requirements to Gesture_Commands.egg-info/requires.txt\n'}
+[4.492375] (Gesture_Commands) StdoutLine: {'line': b'writing top-level names to Gesture_Commands.egg-info/top_level.txt\n'}
+[4.541717] (-) TimerEvent: {}
+[4.579796] (Gesture_Commands) StdoutLine: {'line': b"reading manifest file 'Gesture_Commands.egg-info/SOURCES.txt'\n"}
+[4.581364] (Gesture_Commands) StdoutLine: {'line': b"writing manifest file 'Gesture_Commands.egg-info/SOURCES.txt'\n"}
+[4.642388] (-) TimerEvent: {}
+[4.723243] (Gesture_Commands) StdoutLine: {'line': b'running build_ext\n'}
+[4.725682] (Gesture_Commands) StdoutLine: {'line': b'Creating /home/mitzi/ros2_ws/src/Gesture_Commands/install/Gesture_Commands/lib/python3.8/site-packages/Gesture-Commands.egg-link (link to .)\n'}
+[4.731176] (Gesture_Commands) StdoutLine: {'line': b'Installing Command_Gesture script to /home/mitzi/ros2_ws/src/Gesture_Commands/install/Gesture_Commands/lib/Gesture_Commands\n'}
+[4.731756] (Gesture_Commands) StdoutLine: {'line': b'Installing process_gesture script to /home/mitzi/ros2_ws/src/Gesture_Commands/install/Gesture_Commands/lib/Gesture_Commands\n'}
+[4.732455] (Gesture_Commands) StdoutLine: {'line': b'\n'}
+[4.733058] (Gesture_Commands) StdoutLine: {'line': b'Installed /home/mitzi/ros2_ws/src/Gesture_Commands/build/Gesture_Commands\n'}
+[4.733541] (Gesture_Commands) StdoutLine: {'line': b'running install_data\n'}
+[4.742381] (-) TimerEvent: {}
+[4.820799] (Gesture_Commands) CommandEnded: {'returncode': 0}
+[4.842679] (-) TimerEvent: {}
+[4.883378] (Gesture_Commands) JobEnded: {'identifier': 'Gesture_Commands', 'rc': 0}
+[4.884376] (-) EventReactorShutdown: {}
