@@ -9,10 +9,11 @@ import time
 import math
 from threading import Thread
 from nav_msgs.msg import Odometry
-from model import KeyPointClassifier
-from helper_functions import TFHelper
-import landmark_utils as u
-
+from custom_gestures.model import KeyPointClassifier
+from custom_gestures.helper_functions import TFHelper
+import custom_gestures.landmark_utils as u
+import numpy as np
+from custom_gestures.helper_functions import *
 class gesture_command(Node):
     def __init__(self):
         super().__init__('Command_Gesture')
@@ -20,24 +21,26 @@ class gesture_command(Node):
         self.mp_drawing_styles = mp.solutions.drawing_styles
         self.mp_hands = mp.solutions.hands
         self.helper = TFHelper(self)
+
         self.kpclf = KeyPointClassifier()
 
         self.gestures = {
-            0: "Fists: Stop",
-            1: "Pointer: Draw",
-            2: "Two: Left",
-            3: "Three:Right",
-            4: "Four: Forwards",
-            5: "Five: Backwards",
-            6: "No Known Gesture Detected",
+            0: "Open Hand",
+            1: "Thumb up",
+            2: "OK",
+            3: "Peace",
+            4: "Fists",
+            5: "No Hand Detected",
+            6: "Alien",
             7: "Triangle",
             8: "Square",
             9: "Circle"
         }
 
         self.gesture_index = None
+        self.previous_point=None
         self.pose = [0.0, 0.0, 0.0]
-
+        self.binary_image=None
         # For webcam input:
         self.cap = cv2.VideoCapture(0)
         print("found webcam")
@@ -54,12 +57,15 @@ class gesture_command(Node):
         control_thread = Thread(target=self.control)
         control_thread.start()
         print("started control thread...")
-   
-    
+
+
     def process_image(self):
         with self.mp_hands.Hands(model_complexity=0, min_detection_confidence=0.5,min_tracking_confidence=0.5) as hands:
             while self.cap.isOpened():
                 success, image = self.cap.read()
+                image_hight, image_width, _ = image.shape
+                if self.binary_image is None:
+                    self.binary_image=np.zeros((image_width,image_hight,3),np.uint8)
                 if not success:
                     print("Ignoring empty camera frame.")
                     # If loading a video, use 'break' instead of 'continue'.
@@ -74,7 +80,7 @@ class gesture_command(Node):
                 # Draw the hand annotations on the image.
                 image.flags.writeable = True
                 image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
-                no_gesture_index = 6
+                no_gesture_index = 5
                 self.gesture_index = no_gesture_index
 
                 if results.multi_hand_landmarks:
@@ -89,11 +95,42 @@ class gesture_command(Node):
                             self.mp_hands.HAND_CONNECTIONS,
                             self.mp_drawing_styles.get_default_hand_landmarks_style(),
                             self.mp_drawing_styles.get_default_hand_connections_style())
+                       
+                        i=hand_landmarks.landmark[self.mp_hands.HandLandmark.INDEX_FINGER_TIP].x * image_width
+                        y=hand_landmarks.landmark[self.mp_hands.HandLandmark.INDEX_FINGER_TIP].y * image_hight
+                        i=round(i)
+                        y=round(y)
+                        print(f"x:{i}, y:{y}")
+                        if i>=image_width:
+                            i=image_width-1
+                        if i<0:
+                            i=0
+                        if y>=image_hight:
+                            y=image_hight-1
+                        if y<0:
+                            y=0  
+                        if self.previous_point is None:
+                            self.previous_point=(i,y)
+                        else:
+                            cv2.line(self.binary_image, self.previous_point, (i,y), [255,255,255], 3) 
+                            self.previous_point=(i,y)
+                        #self.binary_image[i,y]=[255,255,255] #white
+                newImage = self.binary_image.copy()
+                #capture(newImage)
                 # Flip the image horizontally for a selfie-view display.
-                final = cv2.flip(image, 1)
-                cv2.putText(final, self.gestures[self.gesture_index],
+                cv2.putText(image, self.gestures[self.gesture_index],
                             (10, 30), cv2.FONT_HERSHEY_DUPLEX, 1, 255)
-                cv2.imshow('MediaPipe Hands', final)
+                cv2.imshow('Binary Image', self.binary_image)
+                cv2.imshow('MediaPipe Hands', image)
+                print(f"gesture:{self.gestures[self.gesture_index]}")
+                if self.gestures[self.gesture_index]=="Open Hand":
+                    print("save")
+                    # Filename
+                    filename = 'savedImage.jpg'
+                    
+                    # Using cv2.imwrite() method
+                    # Saving the image
+                    cv2.imwrite(filename, self.binary_image)
                 if cv2.waitKey(5) & 0xFF == 27:
                     self.cap.release()
                 
@@ -102,40 +139,29 @@ class gesture_command(Node):
             speed_msg = Twist()
             #print(self.gesture_index)
             if self.gesture_index==0:
-                # Stop
-                speed_msg.linear.x = 0.0
-                speed_msg.angular.z = 0.0
-                #print("no gesture")
-            elif self.gesture_index==1:
-                # Point/Draw
-                speed_msg.linear.x = 0.0
-                speed_msg.angular.z = 0.0
-                #print("drawing")
-            elif self.gesture_index==2:
-                #Turn Left
-                speed_msg.linear.x = 0.0
-                speed_msg.angular.z = 1.0
-                #print("left")
-            elif self.gesture_index==3:
-                #Turn Right
-                speed_msg.linear.x = 0.0
-                speed_msg.angular.z = -1.0
-                #print("right") 
-            elif self.gesture_index==4:
-                #Forwards
+                #Forward
                 speed_msg.linear.x = 1.0
                 speed_msg.angular.z = 0.0
-                #print("forwards")
-            elif self.gesture_index==5:
-                #Backwards
+                #print("forward")
+            elif self.gesture_index==1:
+                #Backward
                 speed_msg.linear.x = -1.0
                 speed_msg.angular.z = 0.0
                 #print("backward")
-            elif self.gesture_index==6:
-                #No gesture
+            elif self.gesture_index==2:
+                #Turn Right
+                speed_msg.linear.x = 0.0
+                speed_msg.angular.z = 1.0
+                #print("right")
+            elif self.gesture_index==3:
+                #Turn Left
+                speed_msg.linear.x = 0.0
+                speed_msg.angular.z = -1.0
+                #print("left")
+            elif self.gesture_index==5:
+                #Do Nothing
                 speed_msg.linear.x = 0.0
                 speed_msg.angular.z = 0.0
-                #print("no gesture detected")
             elif self.gesture_index == 7:
                 #print("triangle")
                 self.drive_triangle()
@@ -257,11 +283,7 @@ class gesture_command(Node):
 
     def process_pose(self, msg):
         # print(msg)
-        
-        temp_pose = self.helper.convert_pose_to_xy_and_theta(msg.pose.pose)
-        pose_list = list(temp_pose)
-        pose_list[2] = pose_list[2] * 180 / (2* math.pi)
-        self.pose = tuple(pose_list)
+        self.pose = self.helper.convert_pose_to_xy_and_theta(msg.pose)
         print(self.pose)
     
 

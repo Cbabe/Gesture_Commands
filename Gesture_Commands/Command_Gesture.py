@@ -116,7 +116,7 @@ class gesture_command(Node):
                             self.previous_point=(i,y)
                         #self.binary_image[i,y]=[255,255,255] #white
                 newImage = self.binary_image.copy()
-                #capture(newImage)
+                capture(newImage)
                 # Flip the image horizontally for a selfie-view display.
                 cv2.putText(image, self.gestures[self.gesture_index],
                             (10, 30), cv2.FONT_HERSHEY_DUPLEX, 1, 255)
