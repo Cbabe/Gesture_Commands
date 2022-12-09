@@ -1,6 +1,6 @@
 import cv2
 import numpy as np 
-from helper_functions import find_shapes
+from Gesture_Commands.helper_functions import find_shapes
 drawing = False # true if mouse is pressed
 pt1_x , pt1_y = None , None
 

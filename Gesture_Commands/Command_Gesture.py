@@ -10,10 +10,10 @@ import math
 from threading import Thread
 from nav_msgs.msg import Odometry
 from custom_gestures.model import KeyPointClassifier
-from custom_gestures.helper_functions import TFHelper
+from Gesture_Commands.helper_functions import TFHelper
 import custom_gestures.landmark_utils as u
 import numpy as np
-from custom_gestures.helper_functions import *
+from Gesture_Commands.helper_functions import *
 class gesture_command(Node):
     def __init__(self):
         super().__init__('Command_Gesture')
@@ -25,13 +25,13 @@ class gesture_command(Node):
         self.kpclf = KeyPointClassifier()
 
         self.gestures = {
-            0: "Open Hand",
-            1: "Thumb up",
-            2: "OK",
-            3: "Peace",
-            4: "Fists",
-            5: "No Hand Detected",
-            6: "Alien",
+            0: "Fists: Stop",
+            1: "Pointer: Draw",
+            2: "Two: Left",
+            3: "Three:Right",
+            4: "Four: Backwards",
+            5: "Five: Forwards",
+            6: "No Known Gesture Detected",
             7: "Triangle",
             8: "Square",
             9: "Circle"
@@ -100,7 +100,7 @@ class gesture_command(Node):
                         y=hand_landmarks.landmark[self.mp_hands.HandLandmark.INDEX_FINGER_TIP].y * image_hight
                         i=round(i)
                         y=round(y)
-                        print(f"x:{i}, y:{y}")
+                        # print(f"x:{i}, y:{y}")
                         if i>=image_width:
                             i=image_width-1
                         if i<0:
@@ -120,7 +120,7 @@ class gesture_command(Node):
                 # Flip the image horizontally for a selfie-view display.
                 cv2.putText(image, self.gestures[self.gesture_index],
                             (10, 30), cv2.FONT_HERSHEY_DUPLEX, 1, 255)
-                cv2.imshow('Binary Image', self.binary_image)
+                # cv2.imshow('Binary Image', self.binary_image)
                 cv2.imshow('MediaPipe Hands', image)
                 if cv2.waitKey(5) & 0xFF == 27:
                     self.cap.release()
@@ -274,7 +274,13 @@ class gesture_command(Node):
 
     def process_pose(self, msg):
         # print(msg)
-        self.pose = self.helper.convert_pose_to_xy_and_theta(msg.pose)
+
+        temp_pose = self.helper.convert_pose_to_xy_and_theta(msg.pose.pose) # tuple
+        pose_list = list(temp_pose) # list
+        pose_list[2] = pose_list[2] * 180 / (2* math.pi)
+        self.pose = pose_list
+
+
         print(self.pose)
     
 

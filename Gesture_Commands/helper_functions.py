@@ -7,6 +7,7 @@ from geometry_msgs.msg import PoseStamped, Pose, Point, Quaternion, TransformSta
 from tf2_ros.buffer import Buffer
 from tf2_ros.transform_listener import TransformListener
 from tf2_ros.transform_broadcaster import TransformBroadcaster
+
 from rclpy.time import Time
 from rclpy.duration import Duration
 import math
@@ -27,7 +28,7 @@ import numpy as np
 class FilledShape:
     def __init__(self, img):
         self.img = img
-
+    
     def detect(self, contour, debug):
         shape = "undefined"
         epsilon = 0.03 * cv.arcLength(contour, True)
@@ -150,13 +151,35 @@ class TFHelper(object):
                                            z=rotation[2],
                                            w=rotation[3]))
 
+    def euler_from_quaternion(self, x, y, z, w):
+        """
+            Convert a quaternion into euler angles (roll, pitch, yaw)
+            roll is rotation around x in radians (counterclockwise)
+            pitch is rotation around y in radians (counterclockwise)
+            yaw is rotation around z in radians (counterclockwise)
+        """
+        t0 = +2.0 * (w * x + y * z)
+        t1 = +1.0 - 2.0 * (x * x + y * y)
+        roll_x = math.atan2(t0, t1)
+
+        t2 = +2.0 * (w * y - z * x)
+        t2 = +1.0 if t2 > +1.0 else t2
+        t2 = -1.0 if t2 < -1.0 else t2
+        pitch_y = math.asin(t2)
+        
+        t3 = +2.0 * (w * z + x * y)
+        t4 = +1.0 - 2.0 * (y * y + z * z)
+        yaw_z = math.atan2(t3, t4)
+        
+        return roll_x, pitch_y, yaw_z # in radians
+
     def convert_pose_to_xy_and_theta(self, pose):
         """ Convert pose (geometry_msgs.Pose) to a (x,y,yaw) tuple """
         orientation_tuple = (pose.orientation.x,
                              pose.orientation.y,
                              pose.orientation.z,
                              pose.orientation.w)
-        angles = list(euler_from_quaternion(*orientation_tuple))
+        angles = list(self.euler_from_quaternion(*orientation_tuple))
         # convert to degrees
         angles[2] = angles[2] * 180 / (2* math.pi)
         return (pose.position.x, pose.position.y, angles[2])

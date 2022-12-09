@@ -10,7 +10,7 @@ import math
 from threading import Thread
 from nav_msgs.msg import Odometry
 from model import KeyPointClassifier
-from helper_functions import TFHelper
+from Gesture_Commands.helper_functions import TFHelper
 import landmark_utils as u
 
 class gesture_command(Node):
