@@ -180,8 +180,6 @@ class TFHelper(object):
                              pose.orientation.z,
                              pose.orientation.w)
         angles = list(self.euler_from_quaternion(*orientation_tuple))
-        # convert to degrees
-        angles[2] = angles[2] * 180 / (2* math.pi)
         return (pose.position.x, pose.position.y, angles[2])
 
     def angle_normalize(self, z):

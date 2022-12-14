@@ -80,7 +80,7 @@ class gesture_command(Node):
                 # Draw the hand annotations on the image.
                 image.flags.writeable = True
                 image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
-                no_gesture_index = 5
+                no_gesture_index = 6
                 self.gesture_index = no_gesture_index
 
                 if results.multi_hand_landmarks:
@@ -126,33 +126,46 @@ class gesture_command(Node):
                     self.cap.release()
                 
     def control(self):
+        
         while True:
             speed_msg = Twist()
             #print(self.gesture_index)
+
             if self.gesture_index==0:
-                #Forward
+                # Stop
+                speed_msg.linear.x = 0.0
+                speed_msg.angular.z = 0.0
+                #print("no gesture")
+            elif self.gesture_index==1:
+                # Point/Draw
+                speed_msg.linear.x = 0.0
+                speed_msg.angular.z = 0.0
+                #print("drawing")
+            elif self.gesture_index==2:
+                #Turn Left
+                speed_msg.linear.x = 0.0
+                speed_msg.angular.z = 1.0
+                #print("left")
+            elif self.gesture_index==3:
+                #Turn Right
+                speed_msg.linear.x = 0.0
+                speed_msg.angular.z = -1.0
+                #print("right") 
+            elif self.gesture_index==4:
+                #Forwards
                 speed_msg.linear.x = 1.0
                 speed_msg.angular.z = 0.0
-                #print("forward")
-            elif self.gesture_index==1:
-                #Backward
+                #print("forwards")
+            elif self.gesture_index==5:
+                #Backwards
                 speed_msg.linear.x = -1.0
                 speed_msg.angular.z = 0.0
                 #print("backward")
-            elif self.gesture_index==2:
-                #Turn Right
-                speed_msg.linear.x = 0.0
-                speed_msg.angular.z = 1.0
-                #print("right")
-            elif self.gesture_index==3:
-                #Turn Left
-                speed_msg.linear.x = 0.0
-                speed_msg.angular.z = -1.0
-                #print("left")
-            elif self.gesture_index==5:
-                #Do Nothing
+            elif self.gesture_index==6:
+                #No gesture
                 speed_msg.linear.x = 0.0
                 speed_msg.angular.z = 0.0
+                #print("no gesture detected")
             elif self.gesture_index == 7:
                 #print("triangle")
                 self.drive_triangle()
@@ -171,94 +184,152 @@ class gesture_command(Node):
     
     def drive_square(self):
         msg = Twist()
+        side = 1 # side length of square
 
-        # drive first side
-        # turn 90 degrees
-        # drive second side
-        # turn 90 degrees
-        # drive third side
-        # turn 90 degrees
-        # drive fourth side
+        for i in range(4):
+            start_x = self.pose[0]
+            start_y = self.pose[1]
+            start_theta = self.pose[2]
+            # drive one side
+            msg.linear.x = 0.75
+            msg.angular.z = 0.0
+            self.vel_pub.publish(msg)
+            while math.sqrt((self.pose[0]-start_x)**2 + (self.pose[1] -start_y)**2) < side:
+                if i == 0:
+                    print("driving first side of square...")
+                if i == 1:
+                    print("driving second side of square...")
+                if i == 2:
+                    print("driving third side of square...")
+                if i == 3:
+                    print("driving fourth side of square...")
+                time.sleep(0.01)
+
+            # turn 90 degrees
+            msg.linear.x = 0.0
+            msg.angular.z = 0.75
+            self.vel_pub.publish(msg)
+            while abs(self.pose[2] - start_theta) < 90:
+                print("turning..")
+                time.sleep(0.01)
+        
+        # stop the Neato
+        msg.linear.x = 0.0
+        msg.angular.z = 0.0
+        self.vel_pub.publish(msg)
+
+        
 
         # drive one side of square
-        msg.linear.x = 1.0
-        msg.angular.z = 0.0
-        self.vel_pub.publish(msg)
-        time.sleep(2.0)
+        # msg.linear.x = 1.0
+        # msg.angular.z = 0.0
+        # self.vel_pub.publish(msg)
+        # time.sleep(2.0)
 
-        # turn 90 degrees
-        msg.linear.x = 0.0
-        msg.angular.z = 1.0
-        self.vel_pub.publish(msg)
-        time.sleep(0.5)
+        # # turn 90 degrees
+        # msg.linear.x = 0.0
+        # msg.angular.z = 1.0
+        # self.vel_pub.publish(msg)
+        # time.sleep(0.5)
         
-        # drive second square side
-        msg.angular.z = 0.0
-        msg.linear.x = 1.0
-        self.vel_pub.publish(msg)
-        time.sleep(2.0)
+        # # drive second square side
+        # msg.angular.z = 0.0
+        # msg.linear.x = 1.0
+        # self.vel_pub.publish(msg)
+        # time.sleep(2.0)
 
-        # turn 90 degrees
-        msg.linear.x = 0.0
-        msg.angular.z = 1.0
-        self.vel_pub.publish(msg)
-        time.sleep(0.5)
+        # # turn 90 degrees
+        # msg.linear.x = 0.0
+        # msg.angular.z = 1.0
+        # self.vel_pub.publish(msg)
+        # time.sleep(0.5)
         
-        # drive third square side
-        msg.angular.z = 0.0
-        msg.linear.x = 1.0
-        self.vel_pub.publish(msg)
-        time.sleep(2.0)
+        # # drive third square side
+        # msg.angular.z = 0.0
+        # msg.linear.x = 1.0
+        # self.vel_pub.publish(msg)
+        # time.sleep(2.0)
 
-        # turn 90 degrees
-        msg.linear.x = 0.0
-        msg.angular.z = 1.0
-        self.vel_pub.publish(msg)
-        time.sleep(0.5)
+        # # turn 90 degrees
+        # msg.linear.x = 0.0
+        # msg.angular.z = 1.0
+        # self.vel_pub.publish(msg)
+        # time.sleep(0.5)
         
-        # drive fourth square side
-        msg.angular.z = 0.0
-        msg.linear.x = 1.0
-        self.vel_pub.publish(msg)
-        time.sleep(2.0)
+        # # drive fourth square side
+        # msg.angular.z = 0.0
+        # msg.linear.x = 1.0
+        # self.vel_pub.publish(msg)
+        # time.sleep(2.0)
 
         print("finished square")
     
     # DOES NOT WORK RN
     def drive_triangle(self):
         msg = Twist()
-        # drive first triangle side
-        msg.linear.x = 1.0
-        msg.angular.z = 0.0
-        self.vel_pub.publish(msg)
-        time.sleep(2.0)
+        side = 1 # side length of square
 
-        # turn 60 degrees
-        print("triangle turn...")
-        msg.linear.x = 0.0
-        msg.angular.z = 1.0
-        self.vel_pub.publish(msg)
-        time.sleep(3.0)
+        for i in range(3):
+            start_x = self.pose[0]
+            start_y = self.pose[1]
+            start_theta = self.pose[2]
+            # drive one side
+            msg.linear.x = 0.75
+            msg.angular.z = 0.0
+            self.vel_pub.publish(msg)
+            while math.sqrt((self.pose[0]-start_x)**2 + (self.pose[1] -start_y)**2) < side:
+                if i == 0:
+                    print("driving first side...")
+                if i == 1:
+                    print("driving second side...")
+                if i == 2:
+                    print("driving third side...")
 
-        # drive second triangle side
-        msg.linear.x = 1.0
-        msg.angular.z = 0.0
-        self.vel_pub.publish(msg)
-        time.sleep(2.0)
-
-        # turn 60 degrees
-        msg.linear.x = 0.0
-        msg.angular.z = 1.0
-        self.vel_pub.publish(msg)
-        time.sleep(3.0)
-
-        # drive third triangle side
-        msg.angular.z = 0.0
-        msg.linear.x = 1.0
-        self.vel_pub.publish(msg)
-        time.sleep(2.0)
+            # turn 60 degrees
+            msg.linear.x = 0.0
+            msg.angular.z = 0.75
+            self.vel_pub.publish(msg)
+            while self.pose[2] - start_theta < 60:
+                print("turning..")
         
-        print("finished triangle")
+        # stop the Neato
+        msg.linear.x = 0.0
+        msg.angular.z = 0.0
+        self.vel_pub.publish(msg)
+
+        # msg = Twist()
+        # # drive first triangle side
+        # msg.linear.x = 1.0
+        # msg.angular.z = 0.0
+        # self.vel_pub.publish(msg)
+        # time.sleep(2.0)
+
+        # # turn 60 degrees
+        # print("triangle turn...")
+        # msg.linear.x = 0.0
+        # msg.angular.z = 1.0
+        # self.vel_pub.publish(msg)
+        # time.sleep(3.0)
+
+        # # drive second triangle side
+        # msg.linear.x = 1.0
+        # msg.angular.z = 0.0
+        # self.vel_pub.publish(msg)
+        # time.sleep(2.0)
+
+        # # turn 60 degrees
+        # msg.linear.x = 0.0
+        # msg.angular.z = 1.0
+        # self.vel_pub.publish(msg)
+        # time.sleep(3.0)
+
+        # # drive third triangle side
+        # msg.angular.z = 0.0
+        # msg.linear.x = 1.0
+        # self.vel_pub.publish(msg)
+        # time.sleep(2.0)
+        
+        # print("finished triangle")
 
 
 
@@ -277,7 +348,10 @@ class gesture_command(Node):
 
         temp_pose = self.helper.convert_pose_to_xy_and_theta(msg.pose.pose) # tuple
         pose_list = list(temp_pose) # list
-        pose_list[2] = pose_list[2] * 180 / (2* math.pi)
+        pose_list[2] = (pose_list[2] * 180 / (math.pi)) % 360
+        if pose_list[2] < 0:
+            pose_list[2] += 360
+
         self.pose = pose_list
 
 
