@@ -26,9 +26,9 @@ class gesture_command(Node):
 
         self.gestures = {
             0: "Fists: Stop",
-            1: "Pointer: Draw",
+            1: "Pointer: Right",
             2: "Two: Left",
-            3: "Three:Right",
+            3: "Three: Right",
             4: "Four: Backwards",
             5: "Five: Forwards",
             6: "No Known Gesture Detected",
@@ -137,9 +137,9 @@ class gesture_command(Node):
                 speed_msg.angular.z = 0.0
                 #print("no gesture")
             elif self.gesture_index==1:
-                # Point/Draw
+                # Turn Right
                 speed_msg.linear.x = 0.0
-                speed_msg.angular.z = 0.0
+                speed_msg.angular.z = -1.0
                 #print("drawing")
             elif self.gesture_index==2:
                 #Turn Left
@@ -170,8 +170,8 @@ class gesture_command(Node):
                 #print("triangle")
                 self.drive_triangle()
             elif self.gesture_index == 8:
-                #print("square")
-                self.drive_square()
+                print("square")
+                #self.drive_square()
 
             elif self.gesture_index == 9:
                 #print("circle")
@@ -279,11 +279,11 @@ class gesture_command(Node):
             self.vel_pub.publish(msg)
             while math.sqrt((self.pose[0]-start_x)**2 + (self.pose[1] -start_y)**2) < side:
                 if i == 0:
-                    print("driving first side...")
+                    print("driving first side. of triangle..")
                 if i == 1:
-                    print("driving second side...")
+                    print("driving second side of triangle...")
                 if i == 2:
-                    print("driving third side...")
+                    print("driving third side of triangle...")
 
             # turn 60 degrees
             msg.linear.x = 0.0
