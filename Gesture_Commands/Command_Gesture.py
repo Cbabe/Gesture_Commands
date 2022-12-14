@@ -29,8 +29,8 @@ class gesture_command(Node):
             1: "Pointer: Right",
             2: "Two: Left",
             3: "Three: Right",
-            4: "Four: Backwards",
-            5: "Five: Forwards",
+            4: "Four: Forwards",
+            5: "Five: Backwards",
             6: "No Known Gesture Detected",
             7: "Triangle",
             8: "Square",
@@ -60,7 +60,7 @@ class gesture_command(Node):
 
 
     def process_image(self):
-        with self.mp_hands.Hands(model_complexity=0, min_detection_confidence=0.5,min_tracking_confidence=0.5) as hands:
+        with self.mp_hands.Hands(model_complexity=0, min_detection_confidence=0.7,min_tracking_confidence=0.7) as hands:
             while self.cap.isOpened():
                 success, image = self.cap.read()
                 image_hight, image_width, _ = image.shape
@@ -267,7 +267,7 @@ class gesture_command(Node):
     # DOES NOT WORK RN
     def drive_triangle(self):
         msg = Twist()
-        side = 1 # side length of square
+        side = 0.75 # side length of triangle
 
         for i in range(3):
             start_x = self.pose[0]
@@ -284,13 +284,20 @@ class gesture_command(Node):
                     print("driving second side of triangle...")
                 if i == 2:
                     print("driving third side of triangle...")
+                time.sleep(0.01)
 
             # turn 60 degrees
             msg.linear.x = 0.0
             msg.angular.z = 0.75
             self.vel_pub.publish(msg)
-            while self.pose[2] - start_theta < 60:
-                print("turning..")
+            while abs(self.pose[2] - start_theta) < 120:
+                if i == 0:
+                    print("driving first turn..")
+                if i == 1:
+                    print("driving second turn...")
+                if i == 2:
+                    print("driving third turn..")
+                time.sleep(0.01)
         
         # stop the Neato
         msg.linear.x = 0.0
@@ -336,10 +343,10 @@ class gesture_command(Node):
     def drive_circle(self):
         msg = Twist()
 
-        msg.linear.x = 1.0
+        msg.linear.x = 0.5
         msg.angular.z = 1.0
         self.vel_pub.publish(msg)
-        time.sleep(3.0)
+        time.sleep(5.0)
 
         print("finished circle")
 
