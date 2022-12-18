@@ -1,4 +1,4 @@
-"""Command neato via keyboard inputs"""
+"""Command neato via gestures"""
 
 import rclpy
 from rclpy.node import Node
@@ -18,11 +18,11 @@ from Gesture_Commands.helper_functions import *
 class gesture_command(Node):
     def __init__(self):
         super().__init__('Command_Gesture')
-        self.mp_drawing = mp.solutions.drawing_utils
-        self.mp_drawing_styles = mp.solutions.drawing_styles
-        self.mp_hands = mp.solutions.hands
-        self.helper = TFHelper(self)
-        self.kpclf = KeyPointClassifier()
+        self.mp_drawing = mp.solutions.drawing_utils # Media Pipe
+        self.mp_drawing_styles = mp.solutions.drawing_styles # Media Pipe
+        self.mp_hands = mp.solutions.hands # Media Pipe
+        self.helper = TFHelper(self) # help with transformations and odometry
+        self.kpclf = KeyPointClassifier() # ML Classification
 
         self.gestures = {
             0: "Fists: Stop",
@@ -82,23 +82,23 @@ class gesture_command(Node):
                 if results.multi_hand_landmarks: # If a hand is in the image
                     for hand_landmarks in results.multi_hand_landmarks: # look at each hand
                         landmark_list = u.calc_landmark_list(image, hand_landmarks) # Find the points on the hand
-                        keypoints = u.pre_process_landmark(landmark_list) # Classify the position of the points on the hand to a gesture
-                        self.gesture_index = self.kpclf(keypoints)
+                        keypoints = u.pre_process_landmark(landmark_list) # Find keypoints
+                        self.gesture_index = self.kpclf(keypoints) # Classify the position of the points on the hand to a gesture
 
                         self.mp_drawing.draw_landmarks(
                             image,
                             hand_landmarks,
                             self.mp_hands.HAND_CONNECTIONS,
                             self.mp_drawing_styles.get_default_hand_landmarks_style(),
-                            self.mp_drawing_styles.get_default_hand_connections_style())
+                            self.mp_drawing_styles.get_default_hand_connections_style()) # Add points to image
                 # Flip the image horizontally for a selfie-view display.
-                final = cv2.flip(image, 1)
+                final = cv2.flip(image, 1) # Flip image
                 cv2.putText(final, self.gestures[self.gesture_index],
-                            (10, 30), cv2.FONT_HERSHEY_DUPLEX, 1, 255)
-                cv2.imshow('MediaPipe Hands', final)
+                            (10, 30), cv2.FONT_HERSHEY_DUPLEX, 1, 255) # Add text telling what sign was shown
+                cv2.imshow('MediaPipe Hands', final) # Show image
                 if cv2.waitKey(5) & 0xFF == 27:
                     self.cap.release()
-                
+    # Command the Neato
     def control(self):
         while True:
             speed_msg = Twist()
@@ -155,15 +155,16 @@ class gesture_command(Node):
 
     
     def drive_square(self):
-        msg = Twist()
+        # Drive in square based on odometry
+        msg = Twist() # Create blank velocity message
         side = 0.5 # side length of square
 
-        for i in range(4):
-            start_x = self.pose[0]
-            start_y = self.pose[1]
-            start_theta = self.pose[2]
+        for i in range(4): # Repeat for each side
+            start_x = self.pose[0] # Start x position using odometry
+            start_y = self.pose[1] # Start y position using odometry
+            start_theta = self.pose[2] # Start angle using odometry
             # drive one side
-            msg.linear.x = 0.75
+            msg.linear.x = 0.75 # Go fowards
             msg.angular.z = 0.0
             self.vel_pub.publish(msg)
             while math.sqrt((self.pose[0]-start_x)**2 + (self.pose[1] -start_y)**2) < side:
@@ -202,6 +203,7 @@ class gesture_command(Node):
     
 
     def drive_triangle(self):
+        # Drive in triangle based on odometry
         msg = Twist()
         side = 0.5 # side length of triangle
 
@@ -259,10 +261,10 @@ class gesture_command(Node):
 
 
     def drive_circle(self):
+        # Drive in cricle based on timing
         msg = Twist()
-
-        msg.linear.x = 1.0
-        msg.angular.z = 1.0
+        msg.linear.x = 1.0 # Constant linear velocity
+        msg.angular.z = 1.0 # Constant angular velocity
         self.vel_pub.publish(msg)
         start = time.time()
         while time.time() - start < 8.0:
@@ -272,7 +274,6 @@ class gesture_command(Node):
         print("finished circle")
 
     def process_pose(self, msg):
-        # print(msg)
 
         temp_pose = self.helper.convert_pose_to_xy_and_theta(msg.pose.pose) # tuple
         pose_list = list(temp_pose) # list
@@ -281,9 +282,6 @@ class gesture_command(Node):
             pose_list[2] += 360
 
         self.pose = pose_list
-
-
-        #print(self.pose)
     
 
 

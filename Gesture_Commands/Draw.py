@@ -1,4 +1,4 @@
-"""Command neato via keyboard inputs"""
+"""Command neato via gestures"""
 
 import rclpy
 from rclpy.node import Node
@@ -50,6 +50,7 @@ class gesture_command(Node):
         print("created velocity publisher")
         self.odom_sub = self.create_subscription(Odometry, 'odom', self.process_pose, 10)
         print("created odometry subscriber")
+
         camera_thread = Thread(target=self.process_image)
         camera_thread.start()
         print("started camera thread...")
@@ -145,22 +146,20 @@ class gesture_command(Node):
                 cv2.imshow('MediaPipe Hands', image)
                 if cv2.waitKey(5) & 0xFF == 27:
                     self.cap.release()
-                
+    # Command the Neato
     def control(self):
-        
         while True:
             speed_msg = Twist()
             #print(self.gesture_index)
-
             if self.gesture_index==0:
                 # Stop
                 speed_msg.linear.x = 0.0
                 speed_msg.angular.z = 0.0
                 #print("no gesture")
             elif self.gesture_index==1:
-                # Turn Right
+                # Draw
                 speed_msg.linear.x = 0.0
-                speed_msg.angular.z = -1.0
+                speed_msg.angular.z = 0.0
                 #print("drawing")
             elif self.gesture_index==2:
                 #Turn Left
@@ -191,8 +190,8 @@ class gesture_command(Node):
                 #print("triangle")
                 self.drive_triangle()
             elif self.gesture_index == 8:
-                print("square")
-                #self.drive_square()
+                #print("square")
+                self.drive_square()
 
             elif self.gesture_index == 9:
                 #print("circle")
@@ -204,15 +203,16 @@ class gesture_command(Node):
 
     
     def drive_square(self):
-        msg = Twist()
-        side = 1 # side length of square
+        # Drive in square based on odometry
+        msg = Twist() # Create blank velocity message
+        side = 0.5 # side length of square
 
-        for i in range(4):
-            start_x = self.pose[0]
-            start_y = self.pose[1]
-            start_theta = self.pose[2]
+        for i in range(4): # Repeat for each side
+            start_x = self.pose[0] # Start x position using odometry
+            start_y = self.pose[1] # Start y position using odometry
+            start_theta = self.pose[2] # Start angle using odometry
             # drive one side
-            msg.linear.x = 0.75
+            msg.linear.x = 0.75 # Go fowards
             msg.angular.z = 0.0
             self.vel_pub.publish(msg)
             while math.sqrt((self.pose[0]-start_x)**2 + (self.pose[1] -start_y)**2) < side:
@@ -231,64 +231,29 @@ class gesture_command(Node):
             msg.angular.z = 0.75
             self.vel_pub.publish(msg)
             while abs(self.pose[2] - start_theta) < 90:
-                print("turning..")
+                if i == 0:
+                    print("driving first turn..")
+                if i == 1:
+                    print("driving second turn...")
+                if i == 2:
+                    print("driving third turn..")
+                if i == 3:
+                    print("driving fourth turn..")
                 time.sleep(0.01)
         
         # stop the Neato
         msg.linear.x = 0.0
         msg.angular.z = 0.0
         self.vel_pub.publish(msg)
-
-        
-
-        # drive one side of square
-        # msg.linear.x = 1.0
-        # msg.angular.z = 0.0
-        # self.vel_pub.publish(msg)
-        # time.sleep(2.0)
-
-        # # turn 90 degrees
-        # msg.linear.x = 0.0
-        # msg.angular.z = 1.0
-        # self.vel_pub.publish(msg)
-        # time.sleep(0.5)
-        
-        # # drive second square side
-        # msg.angular.z = 0.0
-        # msg.linear.x = 1.0
-        # self.vel_pub.publish(msg)
-        # time.sleep(2.0)
-
-        # # turn 90 degrees
-        # msg.linear.x = 0.0
-        # msg.angular.z = 1.0
-        # self.vel_pub.publish(msg)
-        # time.sleep(0.5)
-        
-        # # drive third square side
-        # msg.angular.z = 0.0
-        # msg.linear.x = 1.0
-        # self.vel_pub.publish(msg)
-        # time.sleep(2.0)
-
-        # # turn 90 degrees
-        # msg.linear.x = 0.0
-        # msg.angular.z = 1.0
-        # self.vel_pub.publish(msg)
-        # time.sleep(0.5)
-        
-        # # drive fourth square side
-        # msg.angular.z = 0.0
-        # msg.linear.x = 1.0
-        # self.vel_pub.publish(msg)
-        # time.sleep(2.0)
+        time.sleep(2.0)
 
         print("finished square")
     
-    # DOES NOT WORK RN
+
     def drive_triangle(self):
+        # Drive in triangle based on odometry
         msg = Twist()
-        side = 0.75 # side length of triangle
+        side = 0.5 # side length of triangle
 
         for i in range(3):
             start_x = self.pose[0]
@@ -322,57 +287,41 @@ class gesture_command(Node):
         
         # stop the Neato
         msg.linear.x = 0.0
+        msg.angular.z = 1.0
+        self.vel_pub.publish(msg)
+        time.sleep(3.0)
+
+        # drive second triangle side
+        msg.linear.x = 1.0
         msg.angular.z = 0.0
         self.vel_pub.publish(msg)
+        time.sleep(2.0)
 
-        # msg = Twist()
-        # # drive first triangle side
-        # msg.linear.x = 1.0
-        # msg.angular.z = 0.0
-        # self.vel_pub.publish(msg)
-        # time.sleep(2.0)
+        # turn 60 degrees
+        msg.linear.x = 0.0
+        msg.angular.z = 1.0
+        self.vel_pub.publish(msg)
+        time.sleep(3.0)
 
-        # # turn 60 degrees
-        # print("triangle turn...")
-        # msg.linear.x = 0.0
-        # msg.angular.z = 1.0
-        # self.vel_pub.publish(msg)
-        # time.sleep(3.0)
-
-        # # drive second triangle side
-        # msg.linear.x = 1.0
-        # msg.angular.z = 0.0
-        # self.vel_pub.publish(msg)
-        # time.sleep(2.0)
-
-        # # turn 60 degrees
-        # msg.linear.x = 0.0
-        # msg.angular.z = 1.0
-        # self.vel_pub.publish(msg)
-        # time.sleep(3.0)
-
-        # # drive third triangle side
-        # msg.angular.z = 0.0
-        # msg.linear.x = 1.0
-        # self.vel_pub.publish(msg)
-        # time.sleep(2.0)
         
-        # print("finished triangle")
+        print("finished triangle")
 
 
 
     def drive_circle(self):
+        # Drive in cricle based on timing
         msg = Twist()
-
-        msg.linear.x = 0.5
-        msg.angular.z = 1.0
+        msg.linear.x = 1.0 # Constant linear velocity
+        msg.angular.z = 1.0 # Constant angular velocity
         self.vel_pub.publish(msg)
-        time.sleep(5.0)
+        start = time.time()
+        while time.time() - start < 8.0:
+            print("driving in a circle...")
+            time.sleep(0.01)
 
         print("finished circle")
 
     def process_pose(self, msg):
-        # print(msg)
 
         temp_pose = self.helper.convert_pose_to_xy_and_theta(msg.pose.pose) # tuple
         pose_list = list(temp_pose) # list
@@ -381,9 +330,6 @@ class gesture_command(Node):
             pose_list[2] += 360
 
         self.pose = pose_list
-
-
-        print(self.pose)
     
 
 
