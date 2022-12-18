@@ -109,7 +109,7 @@ class gesture_command(Node):
                 speed_msg.angular.z = 0.0
                 #print("no gesture")
             elif self.gesture_index==1:
-                # Point/Draw
+                # Draw
                 speed_msg.linear.x = 0.0
                 speed_msg.angular.z = 0.0
                 #print("drawing")
@@ -156,70 +156,86 @@ class gesture_command(Node):
     
     def drive_square(self):
         msg = Twist()
+        side = 0.5 # side length of square
 
-        # drive first side
-        # turn 90 degrees
-        # drive second side
-        # turn 90 degrees
-        # drive third side
-        # turn 90 degrees
-        # drive fourth side
+        for i in range(4):
+            start_x = self.pose[0]
+            start_y = self.pose[1]
+            start_theta = self.pose[2]
+            # drive one side
+            msg.linear.x = 0.75
+            msg.angular.z = 0.0
+            self.vel_pub.publish(msg)
+            while math.sqrt((self.pose[0]-start_x)**2 + (self.pose[1] -start_y)**2) < side:
+                if i == 0:
+                    print("driving first side of square...")
+                if i == 1:
+                    print("driving second side of square...")
+                if i == 2:
+                    print("driving third side of square...")
+                if i == 3:
+                    print("driving fourth side of square...")
+                time.sleep(0.01)
 
-        # drive one side of square
-        msg.linear.x = 1.0
-        msg.angular.z = 0.0
-        self.vel_pub.publish(msg)
-        time.sleep(2.0)
-
-        # turn 90 degrees
-        msg.linear.x = 0.0
-        msg.angular.z = 1.0
-        self.vel_pub.publish(msg)
-        time.sleep(0.5)
+            # turn 90 degrees
+            msg.linear.x = 0.0
+            msg.angular.z = 0.75
+            self.vel_pub.publish(msg)
+            while abs(self.pose[2] - start_theta) < 90:
+                if i == 0:
+                    print("driving first turn..")
+                if i == 1:
+                    print("driving second turn...")
+                if i == 2:
+                    print("driving third turn..")
+                if i == 3:
+                    print("driving fourth turn..")
+                time.sleep(0.01)
         
-        # drive second square side
-        msg.angular.z = 0.0
-        msg.linear.x = 1.0
-        self.vel_pub.publish(msg)
-        time.sleep(2.0)
-
-        # turn 90 degrees
+        # stop the Neato
         msg.linear.x = 0.0
-        msg.angular.z = 1.0
-        self.vel_pub.publish(msg)
-        time.sleep(0.5)
-        
-        # drive third square side
         msg.angular.z = 0.0
-        msg.linear.x = 1.0
-        self.vel_pub.publish(msg)
-        time.sleep(2.0)
-
-        # turn 90 degrees
-        msg.linear.x = 0.0
-        msg.angular.z = 1.0
-        self.vel_pub.publish(msg)
-        time.sleep(0.5)
-        
-        # drive fourth square side
-        msg.angular.z = 0.0
-        msg.linear.x = 1.0
         self.vel_pub.publish(msg)
         time.sleep(2.0)
 
         print("finished square")
     
-    # DOES NOT WORK RN
+
     def drive_triangle(self):
         msg = Twist()
-        # drive first triangle side
-        msg.linear.x = 1.0
-        msg.angular.z = 0.0
-        self.vel_pub.publish(msg)
-        time.sleep(2.0)
+        side = 0.5 # side length of triangle
 
-        # turn 60 degrees
-        print("triangle turn...")
+        for i in range(3):
+            start_x = self.pose[0]
+            start_y = self.pose[1]
+            start_theta = self.pose[2]
+            # drive one side
+            msg.linear.x = 0.75
+            msg.angular.z = 0.0
+            self.vel_pub.publish(msg)
+            while math.sqrt((self.pose[0]-start_x)**2 + (self.pose[1] -start_y)**2) < side:
+                if i == 0:
+                    print("driving first side. of triangle..")
+                if i == 1:
+                    print("driving second side of triangle...")
+                if i == 2:
+                    print("driving third side of triangle...")
+                time.sleep(0.01)
+
+            # turn 60 degrees
+            msg.linear.x = 0.0
+            msg.angular.z = 0.75
+            self.vel_pub.publish(msg)
+            while abs(self.pose[2] - start_theta) < 120:
+                if i == 0:
+                    print("driving first turn..")
+                if i == 1:
+                    print("driving second turn...")
+                if i == 2:
+                    print("driving third turn..")
+                time.sleep(0.01)
+        
+        # stop the Neato
         msg.linear.x = 0.0
         msg.angular.z = 1.0
         self.vel_pub.publish(msg)
@@ -237,11 +253,6 @@ class gesture_command(Node):
         self.vel_pub.publish(msg)
         time.sleep(3.0)
 
-        # drive third triangle side
-        msg.angular.z = 0.0
-        msg.linear.x = 1.0
-        self.vel_pub.publish(msg)
-        time.sleep(2.0)
         
         print("finished triangle")
 
@@ -253,18 +264,26 @@ class gesture_command(Node):
         msg.linear.x = 1.0
         msg.angular.z = 1.0
         self.vel_pub.publish(msg)
-        time.sleep(3.0)
+        start = time.time()
+        while time.time() - start < 8.0:
+            print("driving in a circle...")
+            time.sleep(0.01)
 
         print("finished circle")
 
     def process_pose(self, msg):
         # print(msg)
-        
-        temp_pose = self.helper.convert_pose_to_xy_and_theta(msg.pose.pose)
-        pose_list = list(temp_pose)
-        pose_list[2] = pose_list[2] * 180 / (2* math.pi)
-        self.pose = tuple(pose_list)
-        print(self.pose)
+
+        temp_pose = self.helper.convert_pose_to_xy_and_theta(msg.pose.pose) # tuple
+        pose_list = list(temp_pose) # list
+        pose_list[2] = (pose_list[2] * 180 / (math.pi)) % 360
+        if pose_list[2] < 0:
+            pose_list[2] += 360
+
+        self.pose = pose_list
+
+
+        #print(self.pose)
     
 
 
