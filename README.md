@@ -46,7 +46,7 @@ In order to lay the foundation for adding more features to our project, we decid
 
 ### Gesture Control
 #### Simple Gestures
-<img width="500" src="https://github.com/Cbabe/Gesture_Commands/blob/main/gesture_good(1).gif">
+<img width="500" src="https://github.com/Cbabe/Gesture_Commands/blob/main/gestures_good(1).gif">
 
 #### Drive in a Triangle
 <img width="500" src="https://github.com/Cbabe/Gesture_Commands/blob/main/triangle_good(1).gif">
