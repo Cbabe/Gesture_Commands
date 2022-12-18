@@ -35,33 +35,33 @@ class gesture_command(Node):
             7: "Triangle",
             8: "Square",
             9: "Circle"
-        }
+        } # Gestures we can detect
 
         self.gesture_index = None
         self.pose = [0.0, 0.0, 0.0]
 
         # For webcam input:
-        self.cap = cv2.VideoCapture(0)
+        self.cap = cv2.VideoCapture(0) # Use Laptop video 
         print("found webcam")
-        self.vel_pub = self.create_publisher(Twist, 'cmd_vel', 10)
+        self.vel_pub = self.create_publisher(Twist, 'cmd_vel', 10) # Publish angular and linear velocity to the robot
         print("created velocity publisher")
-        self.odom_sub = self.create_subscription(Odometry, 'odom', self.process_pose, 10)
+        self.odom_sub = self.create_subscription(Odometry, 'odom', self.process_pose, 10) # recice odometry from the robot
         print("created odometry subscriber")
         
-
-        camera_thread = Thread(target=self.process_image)
-        camera_thread.start()
+        # Uses two thread one for the camera so the video is always showing and the other to control the robot
+        camera_thread = Thread(target=self.process_image) # Creates Camera Thread
+        camera_thread.start() # Starts Camera Thread
         print("started camera thread...")
 
-        control_thread = Thread(target=self.control)
-        control_thread.start()
+        control_thread = Thread(target=self.control) # Creates Control Thread
+        control_thread.start() # Starts Control Thread
         print("started control thread...")
    
     
     def process_image(self):
-        with self.mp_hands.Hands(model_complexity=0, min_detection_confidence=0.5,min_tracking_confidence=0.5) as hands:
-            while self.cap.isOpened():
-                success, image = self.cap.read()
+        with self.mp_hands.Hands(model_complexity=0, min_detection_confidence=0.5,min_tracking_confidence=0.5) as hands: # Initalizes hands model
+            while self.cap.isOpened(): # While camera is open
+                success, image = self.cap.read() # Read image
                 if not success:
                     print("Ignoring empty camera frame.")
                     # If loading a video, use 'break' instead of 'continue'.
@@ -70,19 +70,19 @@ class gesture_command(Node):
                 # To improve performance, optionally mark the image as not writeable to
                 # pass by reference.
                 image.flags.writeable = False
-                image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-                results = hands.process(image)
+                image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB) # Convert from RGR to RGB
+                results = hands.process(image) # Finds hands in the image
 
                 # Draw the hand annotations on the image.
                 image.flags.writeable = True
-                image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
-                no_gesture_index = 6
-                self.gesture_index = no_gesture_index
+                image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR) # Convert back from RGB to BGR
+                no_gesture_index = 6 # Index for no know gesture to be displayed
+                self.gesture_index = no_gesture_index # Pre assign the index to no known gesture
 
-                if results.multi_hand_landmarks:
-                    for hand_landmarks in results.multi_hand_landmarks:
-                        landmark_list = u.calc_landmark_list(image, hand_landmarks)
-                        keypoints = u.pre_process_landmark(landmark_list)
+                if results.multi_hand_landmarks: # If a hand is in the image
+                    for hand_landmarks in results.multi_hand_landmarks: # look at each hand
+                        landmark_list = u.calc_landmark_list(image, hand_landmarks) # Find the points on the hand
+                        keypoints = u.pre_process_landmark(landmark_list) # Classify the position of the points on the hand to a gesture
                         self.gesture_index = self.kpclf(keypoints)
 
                         self.mp_drawing.draw_landmarks(

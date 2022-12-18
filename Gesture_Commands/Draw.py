@@ -50,8 +50,6 @@ class gesture_command(Node):
         print("created velocity publisher")
         self.odom_sub = self.create_subscription(Odometry, 'odom', self.process_pose, 10)
         print("created odometry subscriber")
-        
-
         camera_thread = Thread(target=self.process_image)
         camera_thread.start()
         print("started camera thread...")
