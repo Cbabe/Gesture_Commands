@@ -45,9 +45,9 @@ In order to lay the foundation for adding more features to our project, we decid
 [Link to table](https://docs.google.com/document/d/1tlvMmWw1aRIrQCUnLkVYdPTNQ6Ecm9czYmTtKJKjy5w/edit?usp=sharing)
 
 ###
-![](https://github.com/Cbabe/Gesture_Commands/gestures_good(1).gif)
-![](https://github.com/Cbabe/Gesture_Commands/square_good(1).gif)
-![](https://github.com/Cbabe/Gesture_Commands/triangle_good(1).gif)
+![](https://github.com/Cbabe/Gesture_Commands/blob/main/gestures_good(1).gif)
+![](https://github.com/Cbabe/Gesture_Commands/blob/main/triangle_good(1).gif)
+![](https://github.com/Cbabe/Gesture_Commands/blob/main/square_good(1).gif)
 
 ### Path Drawing
 Once we reached a stage in the project where the Minimum Viable Product had been developed, we started working on extensions. We decided to focus on the challenge of drawing custom paths for the Neato to follow. These paths would be “drawn” in the air by the hand giving the commands, read through the webcam and finally processed by the Neato. We believe this process can be divided into three smaller tasks: tracking the hand that draws the shape, recognising what shape this is, and converting this to an actionable path. <br/>
