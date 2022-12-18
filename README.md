@@ -45,10 +45,14 @@ In order to lay the foundation for adding more features to our project, we decid
 [Link to table](https://docs.google.com/document/d/1tlvMmWw1aRIrQCUnLkVYdPTNQ6Ecm9czYmTtKJKjy5w/edit?usp=sharing)
 
 ### Gesture Control
+#### Simple Gestures
+<img width="500" src="https://github.com/Cbabe/Gesture_Commands/blob/main/gesture_good(1).gif">
 
-![](https://github.com/Cbabe/Gesture_Commands/blob/main/gestures_good(1).gif)
-![](https://github.com/Cbabe/Gesture_Commands/blob/main/triangle_good(1).gif)
-![](https://github.com/Cbabe/Gesture_Commands/blob/main/square_good(1).gif){:style="display:block; margin-left:auto; margin-right:auto"}
+#### Drive in a Triangle
+<img width="500" src="https://github.com/Cbabe/Gesture_Commands/blob/main/triangle_good(1).gif">
+
+#### Drive in a Square
+<img width="500" src="https://github.com/Cbabe/Gesture_Commands/blob/main/square_good(1).gif">
 
 
 ### Path Drawing
