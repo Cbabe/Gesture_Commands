@@ -10,10 +10,10 @@ import math
 from threading import Thread
 from nav_msgs.msg import Odometry
 from custom_gestures.model import KeyPointClassifier
-from custom_gestures.helper_functions import TFHelper
+from Gesture_Commands.helper_functions import TFHelper
 import custom_gestures.landmark_utils as u
 import numpy as np
-from custom_gestures.helper_functions import *
+from Gesture_Commands.helper_functions import *
 class gesture_command(Node):
     def __init__(self):
         super().__init__('Command_Gesture')
@@ -25,13 +25,13 @@ class gesture_command(Node):
         self.kpclf = KeyPointClassifier()
 
         self.gestures = {
-            0: "Open Hand",
-            1: "Thumb up",
-            2: "OK",
-            3: "Peace",
-            4: "Fists",
-            5: "No Hand Detected",
-            6: "Alien",
+            0: "Fists: Stop",
+            1: "Pointer: Draw",
+            2: "Two: Left",
+            3: "Three:Right",
+            4: "Four: Backwards",
+            5: "Five: Forwards",
+            6: "No Known Gesture Detected",
             7: "Triangle",
             8: "Square",
             9: "Circle"
@@ -39,6 +39,8 @@ class gesture_command(Node):
 
         self.gesture_index = None
         self.previous_point=None
+        self.x_average=[]
+        self.y_average=[]
         self.pose = [0.0, 0.0, 0.0]
         self.binary_image=None
         # For webcam input:
@@ -96,27 +98,48 @@ class gesture_command(Node):
                             self.mp_drawing_styles.get_default_hand_landmarks_style(),
                             self.mp_drawing_styles.get_default_hand_connections_style())
                        
-                        i=hand_landmarks.landmark[self.mp_hands.HandLandmark.INDEX_FINGER_TIP].x * image_width
+                        x=hand_landmarks.landmark[self.mp_hands.HandLandmark.INDEX_FINGER_TIP].x * image_width
                         y=hand_landmarks.landmark[self.mp_hands.HandLandmark.INDEX_FINGER_TIP].y * image_hight
-                        i=round(i)
+                        x=round(x)
                         y=round(y)
-                        print(f"x:{i}, y:{y}")
-                        if i>=image_width:
-                            i=image_width-1
-                        if i<0:
-                            i=0
+                        # print(f"x:{i}, y:{y}")
+                        if x>=image_width:
+                            x=image_width-1
+                        if x<0:
+                            x=0
                         if y>=image_hight:
                             y=image_hight-1
                         if y<0:
                             y=0  
-                        if self.previous_point is None:
-                            self.previous_point=(i,y)
+                        if len(self.x_average)==0:
+                            print("start over")
+                            self.x_average.append(x)
+                            self.y_average.append(y)
                         else:
-                            cv2.line(self.binary_image, self.previous_point, (i,y), [255,255,255], 3) 
-                            self.previous_point=(i,y)
-                        #self.binary_image[i,y]=[255,255,255] #white
-                newImage = self.binary_image.copy()
-                capture(newImage)
+                            print(f"x_avg:({self.x_average}) x: ({x})")
+                            print(f"y_avg:({self.y_average}) y: ({y})")
+                            if sum(self.x_average)/len(self.x_average)-20<x and sum(self.x_average)/len(self.x_average)+20>x and sum(self.y_average)/len(self.y_average)-20<y and sum(self.y_average)/len(self.y_average)+20>y:
+                                print("Same place")
+                                self.x_average.append(x)
+                                self.y_average.append(y)
+                                if len(self.x_average)>10:
+                                    self.x_average=[]
+                                    self.y_average=[]
+                                    if self.previous_point is None:
+                                        self.previous_point=(x,y)
+                                    else:
+                                        cv2.line(self.binary_image, self.previous_point, (x,y), [255,255,255], 3) 
+                                        newImage = self.binary_image.copy()
+                                        print("Capture")
+                                        capture(newImage)
+                                        self.previous_point=(x,y)
+
+                            else:
+                                print("Miss")
+                                self.x_average=[]
+                                self.y_average=[]
+
+                            
                 # Flip the image horizontally for a selfie-view display.
                 cv2.putText(image, self.gestures[self.gesture_index],
                             (10, 30), cv2.FONT_HERSHEY_DUPLEX, 1, 255)
@@ -274,7 +297,13 @@ class gesture_command(Node):
 
     def process_pose(self, msg):
         # print(msg)
-        self.pose = self.helper.convert_pose_to_xy_and_theta(msg.pose)
+
+        temp_pose = self.helper.convert_pose_to_xy_and_theta(msg.pose.pose) # tuple
+        pose_list = list(temp_pose) # list
+        pose_list[2] = pose_list[2] * 180 / (2* math.pi)
+        self.pose = pose_list
+
+
         print(self.pose)
     
 
