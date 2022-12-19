@@ -46,13 +46,13 @@ In order to lay the foundation for adding more features to our project, we decid
  
 ### Gesture Control
 #### Simple Gestures
-<img width="600" src="gestures_good(1).gif">
+<img width="600" src="GIFs/gestures_good(1).gif">
  
 #### Drive in a Triangle
-<img width="600" src="triangle_good(1).gif">
+<img width="600" src="GIFs/triangle_good(1).gif">
  
 #### Drive in a Square
-<img width="600" src="square_good(1).gif">
+<img width="600" src="GIFs/square_good(1).gif">
  
  
 ### Path Drawing
@@ -61,7 +61,7 @@ Starting with hand tracking, we identify the tip of the finger using MediaPipe a
 Then we implement shape recognition, which is carried out using OpenCV contours function, and we take the path identified in the previous section and fit it to the closest matching shape. Currently, the shapes we can detect are circles, triangles, rectangles, and hexagons. This will ideally work similarly to Quickdraw! by Google or the shape recognition function on many note-taking apps, using AI to identify the shape. We are still working out how to effectively do this, whether we are tracking the pointer finger continuously and drawing lines between positions, or whether we use the pointer finger to set waypoints and then connect the waypoints. <br/>
 Lastly, the conversion to an actionable path is done by pre-defining what path and actions correspond to what shape. Knowing that the user just drew a square for example, the program will execute its pre-written square-driving function using the odometry information discussed previously in Performing the Behaviors. This architecture of drawing predefined shapes graphically and recognizing them was our next-level goal, which we were not able to achieve successfully with the time we had. However with more time we have a clear idea of what our next steps would be.
 #### Path Drawing
-<img width="600" src="pointing_good.gif">
+<img width="600" src="GIFs/pointing_good.gif">
  
 ### Next Steps
 Instead of trying to track the exact movement of the fingertip used to draw and then running that shape through a recognition algorithm, we would use the waypoint method. We would still track the finger tip, but not continuously. When drawing, we would drop way points whenever the fingertip, and by extension the hand, paused for some short amount of time. For example, when drawing a triangle. A waypoint would be dropped as soon as the program recognizes the drawing gesture, then as the user draws the first side of the triangle and stops to change direction and draw the second side, the program drops another waypoint at that tip of the triangle because the hand stopped moving for a second or two to indicate a waypoint would be dropped. This process would be the same for any shape, for example when drawing a square we’d simply pause the needed time at every corner, and could also easily be extended to general paths like a line or a zig-zag pattern. The weakness of this method is that curves in shapes and paths wouldn’t be well recorded. So a circle, depending on how many waypoints one makes, could make the Neato actually move in a hexagon or octagon for example.
